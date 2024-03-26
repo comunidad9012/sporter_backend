@@ -6,3 +6,4 @@ class Producto(BaseModel):
     descripcion: str = Field(min_length=2, max_length=255)
     precio: PositiveInt
     existencias: PositiveInt
+    img_orig_name: str = Field(min_length=1, max_length=100)
