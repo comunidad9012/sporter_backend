@@ -30,16 +30,19 @@ def altaProduct():
     formRespuesta: Dict = request.form.to_dict()
 
 
-    if 'file' not in request.files:
+    if 'filename' not in request.files:
         return {"msg": "Debes cargar una imagen"}, 400
     
-    file = request.files['file']
+    file = request.files['filename']
+
+    formRespuesta["img_orig_name"]=file.filename
 
     if file.filename == '':
         return {"msg": "Debes cargar una imagen"}, 400
     
     if file and allowed_file(file.filename):
         filename = uuid.uuid4()
+        formRespuesta["img_rand_name"]=str(filename)
         file.save(os.path.join(os.getenv("FILES_DIR"), str(filename)))
 
 
