@@ -13,3 +13,12 @@ class Producto(CustomBase):
     existencias: Mapped[int] = mapped_column(INTEGER(unsigned=True))
     img_orig_name: Mapped[str] = mapped_column(String(100))
     img_rand_name: Mapped[str] = mapped_column(String(36))
+
+    def serialize(self):
+
+        as_dictionary = {}
+
+        for column in self.__class__.__table__.columns:
+            as_dictionary.setdefault(column.name, getattr(self, column.name))
+
+        return as_dictionary
