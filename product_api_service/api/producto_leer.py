@@ -1,3 +1,5 @@
+from base64 import encodebytes
+from os import getenv
 from math import ceil
 from typing import Any, Dict, Union
 
@@ -21,7 +23,7 @@ def read_by_product_id(id):
             models.Producto.id == id,
         )
 
-        product_result: Union[models.Producto, None] = db_session.execute(
+        product_result: Union[tuple[models.Producto], None] = db_session.execute(
             product_query
         ).one_or_none()
 
@@ -30,10 +32,9 @@ def read_by_product_id(id):
 
     product_as_dict: Dict = product_result[0].serialize()
 
-    # TODO: OBTENER IMAGEN DESDE EL FILESYSTEM
-    # TODO: AGREGAR IMAGEN AL JSON A DEVOLVER
-
-    product_as_dict.pop("img_rand_name")
+    product_as_dict["imagen"] = _get_image_binary_utf8(
+        product_as_dict.pop("img_rand_name")
+    )
 
     return product_as_dict, 200
 
@@ -72,9 +73,6 @@ def read_by_query():
             "search_query": http_query,
         }, 400
 
-    # TODO: OBTENER IMAGEN DESDE EL FILESYSTEM
-    # TODO: AGREGAR IMAGEN AL JSON A DEVOLVER
-
     return {
         "search_result": _serialize_query_result(fetched_results),
         "search_query": http_query,
@@ -102,7 +100,9 @@ def _serialize_query_result(list_of_rows):
     for row in list_of_rows:
         serialized_product = row[0].serialize()
 
-        serialized_product.pop("img_rand_name")
+        serialized_product["imagen"] = _get_image_binary_utf8(
+            serialized_product.pop("img_rand_name")
+        )
 
         serialized_list.append(serialized_product)
 
@@ -137,3 +137,12 @@ def _add_filters(query):
         )
 
     return query
+
+
+def _get_image_binary_utf8(image_rand_id):
+    with open(getenv("FILES_DIR") + "/" + image_rand_id, "rb") as image_file:
+        image_hex = image_file.read()
+
+    image_bin = encodebytes(image_hex).decode("utf-8")
+
+    return image_bin
