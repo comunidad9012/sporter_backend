@@ -18,7 +18,7 @@ example_crud_bp = Blueprint(
 @example_crud_bp.post("/create")
 def create_new_example():
 
-    # Este endpoint recive un formulario
+    # Este endpoint recibe un formulario
     # tomamos el formulario de la request y lo convertimos en diccionario para poder trabajar con el
     example_info_request: Dict = request.form.to_dict()
 
@@ -61,7 +61,7 @@ def create_new_example():
             db_session.add(example_object)
             db_session.commit()
 
-    # esto es para manejar prosibles errores de elementos duplicados
+    # esto es para manejar posibles errores de elementos duplicados
     # prodiamos intentar manejar otras excepciones posibles, no solo esta
     # depende de lo que se intente lograr
     except IntegrityError as ie:
