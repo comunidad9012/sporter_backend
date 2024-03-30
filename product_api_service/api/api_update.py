@@ -5,6 +5,10 @@ from sqlalchemy.exc import IntegrityError
 from product_api_service.database.session import create_local_session
 from product_api_service import schemas, models
 from pydantic import ValidationError
+import os 
+
+
+
 
 updateProduct_bp = Blueprint(
     "updateProduct",
@@ -33,29 +37,43 @@ def update_existingProduct():
     try:
         with create_local_session() as db_session:
 
+            # Obtener la información del ejemplo antes de actualizar
+            old_example = (
+                db_session.query(models.Ejemplo)
+                .filter(models.Ejemplo.id == RequestValidada["id"])
+                .first()
+            )
+
             # Con este se actualiza
+            update_data = {
+                "nombre": RequestValidada["nombre"],
+                "descripcion": RequestValidada["descripcion"],
+                "precio": RequestValidada["precio"],
+                "cantidad": RequestValidada["cantidad"],
+            }
+
+            # Verificar si hay una nueva imagen
+            if "imagen" in RequestValidada:
+                update_data["img_orig_name"] = RequestValidada["imagen"]
+                update_data["img_rand_name"] = RequestValidada["imagen"]
+
+                # Eliminar la imagen anterior si existe
+                if old_example and old_example.img_rand_name:
+                    old_image_path = os.path.join(UPLOAD_FOLDER, old_example.img_rand_name) 
+                    if os.path.exists(old_image_path):
+                        os.remove(old_image_path)
+
+#Utilizando os permite trabajar con carpetas, subdirectorios, etc
+#en upload folder poner el directorio donde se van a guardar las imagenes
+#ruta/de/tu/carpeta/upload
 
             update_example_query: update = (
                 update(models.Ejemplo)
                 .where(models.Ejemplo.id == RequestValidada["id"])
-                .values(
-                    nombre=RequestValidada["nombre"],
-                    descripcion=RequestValidada["descripcion"],
-                    imagen=RequestValidada["imagen"],
-                    precio=RequestValidada["precio"],
-                    cantidad=RequestValidada["cantidad"],
-                )
+                .values(**update_data)
             )
             db_session.execute(update_example_query)
             db_session.commit()
-
-            
-            # Eliminar el registro
-            delete_example_query = (
-                delete(models.Ejemplo)
-                .where(models.Ejemplo.id == RequestValidada["id"])
-            )
-            db_session.execute(delete_example_query)
 
     except IntegrityError as ie:
         campo_repetido = ie.orig.args[1].split(".")[-1].strip("'")
@@ -65,6 +83,7 @@ def update_existingProduct():
         return {"msj": "Error interno del servidor"}, 500
 
     return {"msj": f"Ejemplo {RequestValidada['nombre']} actualizado exitosamente"}, 200
+
 
 
 
