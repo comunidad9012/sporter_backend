@@ -59,9 +59,10 @@ def update_existingProduct():
 
                 # Eliminar la imagen anterior si existe
                 if old_example and old_example.img_rand_name:
-                    old_image_path = os.path.join(UPLOAD_FOLDER, old_example.img_rand_name) 
+                    old_image_path = os.path.join(os.getenv('FILES_DIR'), old_example.img_rand_name)
                     if os.path.exists(old_image_path):
                         os.remove(old_image_path)
+
 
 #Utilizando os permite trabajar con carpetas, subdirectorios, etc
 #en upload folder poner el directorio donde se van a guardar las imagenes
