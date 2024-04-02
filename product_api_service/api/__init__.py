@@ -1,4 +1,5 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
+
 
 service_api = Blueprint("api", __name__, url_prefix="/api")
 
@@ -13,3 +14,7 @@ service_api.register_blueprint(_product_read_bp)
 from product_api_service.api.api_update import updateProduct_bp as _updateProduct_bp
 
 service_api.register_blueprint(_updateProduct_bp)
+
+from product_api_service.api.blueprint_elim import blueprint_eliminar
+
+service_api.register_blueprint(blueprint_eliminar)
