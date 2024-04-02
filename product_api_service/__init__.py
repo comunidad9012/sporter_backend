@@ -1,8 +1,10 @@
 from flask import Flask, request
+from flask_cors import CORS
 
 
 def create_app():
     new_app = Flask(__name__)
+    cors_app = CORS(new_app)
 
     @new_app.route("/")
     def home_page():
