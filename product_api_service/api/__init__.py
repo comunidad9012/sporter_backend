@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 
-# Crear un blueprint
+
 service_api = Blueprint("api", __name__, url_prefix="/api")
 
 from product_api_service.api.altaProduct import altaProductBP as _altaProductBP
