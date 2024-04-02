@@ -12,23 +12,18 @@ def eliminar_producto():
     data=request.json
     id_producto=data.get('id')
     if id_producto is not None:
-        id_prueba=1;
-        if id_producto==id_prueba:
-            #with create_local_session() as db:
-                #try:
-                    #producto=db.query(Producto).filter(Producto.id == id_producto).first();
-                    #if producto:
-                        #db.delete(producto);
-                        #db.commit();
-                        #return jsonify({'mensaje':'Producto eliminado correctamente'}),200;
-                    #else:
-                       # return jsonify({'error':'Producto no encontrado'}),404;
-                #except SQLAlchemyError as e:
-                    #db.rollback();
-                    #print(f"Error en la base de datos: {e}")
-                    #return jsonify({'error': 'Error en la base de datos'}), 500
-            return jsonify({'alert':'producto eliminado'})
-        else:
-            return jsonify({'error':'Los IDs no coinciden'})
+        with create_local_session() as db:
+            try:
+                producto=db.query(Producto).filter(Producto.id == id_producto).first();
+                if producto:
+                    db.delete(producto);
+                    db.commit();
+                    return jsonify({'mensaje':'Producto eliminado correctamente'}),200;
+                else:
+                    return jsonify({'error':'Producto no encontrado'}),404;
+            except SQLAlchemyError as e:
+                db.rollback();
+                print(f"Error en la base de datos: {e}")
+                return jsonify({'error': 'Error en la base de datos'}), 500
     else:
         return jsonify({'error':'Se requiere el id del producto'}),400;
