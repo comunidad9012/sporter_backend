@@ -98,5 +98,5 @@ def update_existingProduct():
         return {"msj": "Error interno del servidor"}, 500
 
     return {
-        "msg": f"Producto {product_to_update.id} - {product_to_update.nombre} actualizado exitosamente"
+        "msg": f"Producto {UpdateRequest['id']} - {RequestValidada['nombre']} actualizado exitosamente"
     }, 200
