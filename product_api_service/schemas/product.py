@@ -7,5 +7,4 @@ class Producto(BaseModel):
     img_rand_name: str | None = Field(min_length=1, max_length=36, default=None)
     precio: PositiveInt
     existencias: PositiveInt
-    img_orig_name: str = Field(min_length=1, max_length=100)
-    img_rand_name: str = Field(min_length=1, max_length=36)
+    img_orig_name: str | None  = Field(min_length=1, max_length=100, default=None)
