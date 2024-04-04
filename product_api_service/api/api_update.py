@@ -27,7 +27,7 @@ def update_existingProduct():
         imagen = UpdateFiles["filename"]
         new_image: bool = True
 
-    if imagen.filename and new_image:  # Verificar si el nombre del archivo está vacío
+    if new_image and imagen.filename :  # Verificar si el nombre del archivo está vacío
         UpdateRequest["img_orig_name"] = imagen.filename
 
     # validar info
