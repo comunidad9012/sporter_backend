@@ -18,3 +18,7 @@ service_api.register_blueprint(_updateProduct_bp)
 from product_api_service.api.blueprint_elim import blueprint_eliminar
 
 service_api.register_blueprint(blueprint_eliminar)
+
+from product_api_service.api.leer_etiqueta import read_tag_bp
+
+service_api.register_blueprint(read_tag_bp)
