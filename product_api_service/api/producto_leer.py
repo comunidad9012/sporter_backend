@@ -32,7 +32,7 @@ def read_by_product_id(id):
 
         product_result: models.Producto = product_result[0]
 
-        product_tag = product_result.etiquetas
+        product_tag = product_result.etiqueta
 
     product_as_dict: Dict = product_result.serialize()
     product_as_dict["etiqueta"] = {
