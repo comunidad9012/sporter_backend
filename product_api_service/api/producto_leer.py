@@ -62,6 +62,9 @@ def read_by_query():
         total_match = _get_match_total_pages(db_session)
         total_pages = ceil(total_match / elements_per_page)
 
+        if total_pages <= 0:
+            return {"msg": "No se hallaron resultados para esta búsqueda"}, 400
+
         if total_pages < page:
             page = total_pages
 
@@ -128,7 +131,7 @@ def _serialize_query_result(list_of_rows):
     return serialized_list
 
 
-def _add_filters(query):
+def _add_filters(query: Select):
 
     if "precio_min" in request.args and "precio_max" in request.args:
         query = query.where(
@@ -154,6 +157,11 @@ def _add_filters(query):
         query = query.where(
             models.Producto.nombre.like("%" + request.args.get("nombre") + "%")
         )
+
+    if "etiqueta" in request.args:
+        query = query.join(
+            models.Etiqueta, models.Producto.id_etiqueta == models.Etiqueta.id
+        ).where(models.Etiqueta.nombre == request.args.get("etiqueta"))
 
     return query
 
