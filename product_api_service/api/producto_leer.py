@@ -27,10 +27,20 @@ def read_by_product_id(id):
             product_query
         ).one_or_none()
 
-    if product_result is None:
-        return {"msj": f"No se halló Producto identificado por id:'{id}'"}, 400
+        if product_result is None:
+            return {"msj": f"No se halló Producto identificado por id:'{id}'"}, 400
 
-    product_as_dict: Dict = product_result[0].serialize()
+        product_result: models.Producto = product_result[0]
+
+        product_tag = product_result.etiquetas
+
+    product_as_dict: Dict = product_result.serialize()
+    product_as_dict["etiqueta"] = {
+        "id": product_tag.id,
+        "nombre": product_tag.nombre,
+    }
+
+    product_as_dict.pop("id_etiqueta")
 
     product_as_dict["imagen"] = _get_image_binary_utf8(
         product_as_dict.pop("img_rand_name")
@@ -67,6 +77,8 @@ def read_by_query():
             select_query
         ).all()
 
+        serialized_products_list = _serialize_query_result(fetched_results)
+
     if fetched_results is None:
         return {
             "msj": "No se encontraron resultados",
@@ -74,7 +86,7 @@ def read_by_query():
         }, 400
 
     return {
-        "search_result": _serialize_query_result(fetched_results),
+        "search_result": serialized_products_list,
         "search_query": http_query,
         "total_hits": total_match,
         "total_pages": total_pages,
@@ -99,6 +111,13 @@ def _serialize_query_result(list_of_rows):
 
     for row in list_of_rows:
         serialized_product = row[0].serialize()
+
+        serialized_product["etiqueta"] = {
+            "id": row[0].etiqueta.id,
+            "nombre": row[0].etiqueta.nombre,
+        }
+
+        serialized_product.pop("id_etiqueta")
 
         serialized_product["imagen"] = _get_image_binary_utf8(
             serialized_product.pop("img_rand_name")
