@@ -69,7 +69,11 @@ def read_all():
                 func.count(models.Producto.id),
             )
             .select_from(models.Etiqueta)
-            .join(models.Producto, models.Etiqueta.id == models.Producto.id_etiqueta)
+            .join(
+                models.Producto,
+                models.Etiqueta.id == models.Producto.id_etiqueta,
+                isouter=True,
+            )
             .group_by(models.Etiqueta.id, models.Etiqueta.nombre)
         )
 
