@@ -12,9 +12,8 @@ class User(CustomBase):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     nombre: Mapped[str] = mapped_column(String(40))
     usuario: Mapped[str] = mapped_column(String(40))
-    contraseña: Mapped[str] = mapped_column(String(40))
+    contraseña: Mapped[str] = mapped_column(String(60))
     is_admin: Mapped[bool] = mapped_column(Boolean)
-    productos: Mapped[List["Producto"]] = relationship(back_populates="user")
 
     def serialize(self):
 

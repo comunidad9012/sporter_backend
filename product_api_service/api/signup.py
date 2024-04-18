@@ -3,7 +3,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from product_api_service.database.session import create_local_session
 from product_api_service import schemas, models
 from product_api_service.models import User
-from werkzeug.security import generate_password_hash
+import bcrypt
 signup_bp=Blueprint("signup", __name__, url_prefix="/signup")
 @signup_bp.route("/register", methods=["POST"])
 def register_user():
@@ -14,7 +14,7 @@ def register_user():
         contraseña = data.get('contraseña')
         is_admin = data.get('is_admin', False)
 
-        hashed_password=generate_password_hash(contraseña)
+        hashed_password=bcrypt.hashpw(contraseña.encode("UTF-8"), bcrypt.gensalt())
         with create_local_session() as db:
             existing_user=db.query(User).filter_by(usuario=usuario).first()
             if existing_user:
