@@ -10,6 +10,7 @@ def register_user():
     try:
         nombre=request.form.get("nombre")
         usuario=request.form.get("usuario")
+        correo=request.form.get("correo")
         contraseña=request.form.get("contraseña")
         is_admin=request.form.get("is_admin")
 
@@ -20,7 +21,7 @@ def register_user():
                 respuesta=make_response(jsonify({"error":"El usuario ya existe"}))
                 respuesta.set_cookie("error_registro","Usuario ya existe", max_age=3600)
                 return respuesta
-            new_user=User(nombre=nombre, usuario=usuario, contraseña=hashed_password,is_admin=is_admin)
+            new_user=User(nombre=nombre, usuario=usuario, contraseña=hashed_password,is_admin=is_admin, correo=correo)
             db.add(new_user)
             db.commit()
             respuesta=make_response(jsonify({"mensaje":"Usuario creado correctamente"}),200)
