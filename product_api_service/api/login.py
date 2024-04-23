@@ -4,8 +4,8 @@ import bcrypt
 from product_api_service.models import User
 from product_api_service.database.session import create_local_session
 
-login_bp=Blueprint("login",__name__,url_prefix="/login")
-@login_bp.route("/authenticate", methods=["POST"])
+login_bp=Blueprint("login",__name__,url_prefix="/user")
+@login_bp.route("/login", methods=["POST"])
 def login():
     try:
         usuario=request.form.get("usuario")
