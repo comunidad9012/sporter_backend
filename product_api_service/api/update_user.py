@@ -11,7 +11,7 @@ def update_user():
         nombre=request.form.get("nombre")
         correo=request.form.get("correo")
         contraseña=request.form.get("contraseña")
-        is_admin=request.form.get("is_admin")
+        is_admin=int(request.form.get("is_admin",0))
         with create_local_session() as db:
             existing_user=db.query(User).filter_by(usuario=usuario).first()
             if existing_user:

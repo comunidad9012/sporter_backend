@@ -12,7 +12,7 @@ def register_user():
         usuario=request.form.get("usuario")
         correo=request.form.get("correo")
         contraseña=request.form.get("contraseña")
-        is_admin=request.form.get("is_admin")
+        is_admin=int(request.form.get("is_admin", 0))
 
         hashed_password=bcrypt.hashpw(contraseña.encode("UTF-8"), bcrypt.gensalt())
         with create_local_session() as db:
