@@ -74,7 +74,6 @@ def read_all():
                 models.Etiqueta.id == models.Producto.id_etiqueta,
                 isouter=True,
             )
-             .join(models.Producto, models.Etiqueta.id == models.Producto.id_etiqueta)
             .group_by(models.Etiqueta.id, models.Etiqueta.nombre)
         )
 
