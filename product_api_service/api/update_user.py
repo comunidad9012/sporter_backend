@@ -7,23 +7,28 @@ updateUser_bp=Blueprint("updateUser", __name__, url_prefix="/user")
 @updateUser_bp.route("/actualizar", methods=["POST"])
 def update_user():
     try:
-        usuario=request.form.get("usuario")
-        nombre=request.form.get("nombre")
-        correo=request.form.get("correo")
-        contraseña=request.form.get("contraseña")
+        usuario=request.form.get("usuario", False)
+        nombre=request.form.get("nombre", False)
+        correo=request.form.get("correo", False)
+        contraseña=request.form.get("contraseña", False)
         is_admin=int(request.form.get("is_admin",0))
         with create_local_session() as db:
             existing_user=db.query(User).filter_by(usuario=usuario).first()
             if existing_user:
-                if nombre:
+                if nombre and nombre != existing_user.nombre:
                     existing_user.nombre=nombre
-                elif correo:
+                    
+                if correo and correo != existing_user.correo:
                     existing_user.correo=correo
-                elif contraseña:
+                    
+                if contraseña and not bcrypt.checkpw(contraseña.encode("UTF-8"), existing_user.contraseña.encode("UTF-8")):
                     hashed_password=bcrypt.hashpw(contraseña.encode("UTF-8"),bcrypt.gensalt())
                     existing_user.contraseña=hashed_password
-                elif is_admin:
+                    
+                if is_admin != existing_user.is_admin:
                     existing_user.is_admin=is_admin
+                
+                db.add(existing_user)
                 db.commit()
                 return jsonify({"mensaje":"Datos actualizados correctamente"}), 200
             else:
