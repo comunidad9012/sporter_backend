@@ -12,6 +12,7 @@ class User(CustomBase):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     nombre: Mapped[str] = mapped_column(String(40))
     usuario: Mapped[str] = mapped_column(String(40))
+    correo:Mapped[str] = mapped_column(String(80))
     contraseña: Mapped[str] = mapped_column(String(60))
     is_admin: Mapped[bool] = mapped_column(Boolean)
 

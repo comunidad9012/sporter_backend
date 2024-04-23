@@ -28,3 +28,9 @@ service_api.register_blueprint(_signup_bp)
 #Login
 from product_api_service.api.login import login_bp as _login_bp
 service_api.register_blueprint(_login_bp)
+#Update user
+from product_api_service.api.update_user import updateUser_bp as _updateUser_bp
+service_api.register_blueprint(_updateUser_bp)
+#admin
+from product_api_service.api.admin import admin_bp as _admin_bp
+service_api.register_blueprint(_admin_bp)
