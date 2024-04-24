@@ -14,6 +14,7 @@ def login():
             user=db.query(User).filter_by(usuario=usuario).first()
             if user and bcrypt.checkpw(contraseña.encode("UTF-8"), user.contraseña.encode("UTF-8")):
                 respuesta=make_response(jsonify({"mensaje":"Inicio de sesión exitosa"}))
+                respuesta.headers['Access-Control-Allow-Credentials'] = "true" 
                 respuesta.set_cookie("logged_in","1",max_age=3600)
                 respuesta.set_cookie("is_admin", str(int(user.is_admin)), max_age=3600)
                 return respuesta, 200  
