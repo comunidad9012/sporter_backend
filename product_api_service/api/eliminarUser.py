@@ -3,7 +3,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from product_api_service.models import User  
 from product_api_service.database.session import create_local_session
 
-blueprint_eliminar_usuario = Blueprint("usuarios", __name__, url_prefix="/usuario")
+blueprint_eliminar_usuario = Blueprint("usuarios", __name__, url_prefix="/user")
 
 # Endpoint para eliminar usuario
 @blueprint_eliminar_usuario.route('/eliminar/<id_usuario>', methods=["POST"])
