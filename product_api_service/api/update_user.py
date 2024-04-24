@@ -3,8 +3,10 @@ import bcrypt
 from sqlalchemy.exc import SQLAlchemyError
 from product_api_service.database.session import create_local_session
 from product_api_service.models import User
+from product_api_service.auth.admin import protected_route
 updateUser_bp=Blueprint("updateUser", __name__, url_prefix="/user")
 @updateUser_bp.route("/actualizar", methods=["POST"])
+@protected_route
 def update_user():
     try:
         usuario=request.form.get("usuario", False)
