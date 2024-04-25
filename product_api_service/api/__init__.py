@@ -37,3 +37,6 @@ service_api.register_blueprint(_admin_bp)
 
 from product_api_service.api.eliminarUser import blueprint_eliminar_usuario
 service_api.register_blueprint(blueprint_eliminar_usuario)
+
+from product_api_service.api.usuario_leer import user_read_bp
+service_api.register_blueprint(user_read_bp)

@@ -5,6 +5,8 @@ from flask_cors import CORS
 def create_app():
     new_app = Flask(__name__)
     cors_app = CORS(new_app)
+    new_app.config['CORS_HEADERS'] = 'Content-Type' 
+    new_app.config['Access-Control-Allow-Credentials'] = "true" 
 
     @new_app.route("/")
     def home_page():
