@@ -5,6 +5,7 @@ from sqlalchemy.exc import IntegrityError
 from product_api_service.database.session import create_local_session
 from product_api_service import schemas, models
 from pydantic import ValidationError
+from product_api_service.auth.admin import protected_route
 import os
 
 
@@ -16,6 +17,7 @@ updateProduct_bp = Blueprint(
 
 
 @updateProduct_bp.post("/actualizar")
+@protected_route
 def update_existingProduct():
 
     new_image: bool = False

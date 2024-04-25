@@ -26,6 +26,11 @@ def create_app():
 
         return "Product API Server Working (Not that counter...)"
 
+    @new_app.after_request
+    def allow_cors(resp):
+        resp.headers['Access-Control-Allow-Credentials'] = "true" 
+        return resp
+
     from product_api_service.database import cli_setup
 
     new_app.cli.add_command(cli_setup.db_setup)

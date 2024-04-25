@@ -4,8 +4,10 @@ from product_api_service.database.session import create_local_session
 from product_api_service import schemas, models
 from product_api_service.models import User
 import bcrypt
+from product_api_service.auth.admin import protected_route
 signup_bp=Blueprint("signup", __name__, url_prefix="/user")
 @signup_bp.route("/register", methods=["POST"])
+@protected_route
 def register_user():
     try:
         nombre=request.form.get("nombre")

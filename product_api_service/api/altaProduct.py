@@ -11,6 +11,8 @@ from sqlalchemy.exc import IntegrityError
 from product_api_service.database.session import create_local_session
 from product_api_service import schemas, models
 
+from product_api_service.auth.admin import protected_route
+
 altaProductBP = Blueprint(
     "altaProductBP",
     __name__,
@@ -25,6 +27,7 @@ def allowed_file(filename):
 
 
 @altaProductBP.post("/crear")
+@protected_route
 def altaProduct():
 
     formRespuesta: Dict = request.form.to_dict()
