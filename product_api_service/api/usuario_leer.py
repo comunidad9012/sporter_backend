@@ -33,9 +33,12 @@ def read_by_product_id(id):
 
         user_result: models.User = user_result[0]
 
+        sesiones : list[int] = user_result.sesiones
 
     user_as_dict: Dict = user_result.serialize()
     user_as_dict.pop("contraseña")
+
+    user_as_dict["sesiones"] = [s.login_time_unix * 1000 for s in sesiones]
 
     return user_as_dict, 200
 
