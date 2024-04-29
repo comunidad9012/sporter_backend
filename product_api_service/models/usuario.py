@@ -15,6 +15,7 @@ class User(CustomBase):
     correo:Mapped[str] = mapped_column(String(80))
     contraseña: Mapped[str] = mapped_column(String(60))
     is_admin: Mapped[bool] = mapped_column(Boolean)
+    sesiones: Mapped[List["Sesion"]] = relationship(back_populates="usuario")
 
     def serialize(self):
 
