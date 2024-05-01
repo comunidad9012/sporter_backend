@@ -15,8 +15,9 @@ COPY --from=build /venv /venv
 ENV PATH=/venv/bin:$PATH
 
 WORKDIR /
+COPY ./start_backend.sh /start_backend.sh
 COPY ./product_api_service /product_api_service
 
 EXPOSE 5000
 
-CMD ["gunicorn", "--reload", "-w", "3", "-b", "0.0.0.0:5000", "product_api_service:create_app()", "--access-logfile", "-"]
+CMD ["sh", "start_backend.sh"]
