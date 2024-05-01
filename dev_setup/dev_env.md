@@ -88,9 +88,17 @@ Ahora necesitamos crear un archivo llamado `.env`, en el que definiremos los dat
     MYSQL_DRIVERNAME=mysql+mysqlconnector
     MYSQL_USERNAME=tu_nombre_de_usuario_mysql
     MYSQL_PASSWORD=tu_contraseña_de_usuario_mysql
-    MYSQL_HOST=host_de_mysql # (seguramente es `localhost`!)
-    MYSQL_PORT=3306 # puede ser otro puerto, pero lo mas seguro es que no!
-    MYSQL_DATABASE=sporter_product_database # de ser posible, no cambies esto, pero no deberia haber problema si lo haces
+    # (seguramente es `localhost`!)
+    MYSQL_HOST=host_de_mysql
+    # puede ser otro puerto, pero lo mas seguro es que no!
+    MYSQL_PORT=3306
+    # de ser posible, no cambies esto, pero no deberia haber problema si lo haces
+    MYSQL_DATABASE=sporter_product_database
+    # Aqui puedes configurar los datos para el administrador
+    # que el sistema creara por defecto
+    APP_ADMIN_NAME=admin
+    APP_ADMIN_PASS=password
+    APP_ADMIN_EMAIL=admin@example.com
 ```
 
 ### 4- Levantar la Base de Datos
